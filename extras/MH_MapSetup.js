@@ -121,8 +121,8 @@ define([
               var plabels1 = new LabelLayer({ id: "labels1" });
               plabels1.addFeatureLayer(pBase_LCC, pLabelRenderer1, "{" + strlabelField1 + "}");
 
-              pHeatLayer = new FeatureLayer("https://www.sciencebase.gov/arcgis/rest/services/Catalog/55c00cf2e4b033ef52104158/MapServer/0", { mode: FeatureLayer.MODE_ONDEMAND, id: "GNLCC Project Heat Map", visible: false });
-              pHeatLayer2 = new ArcGISDynamicMapServiceLayer("https://www.sciencebase.gov/arcgis/rest/services/Catalog/55c00cf2e4b033ef52104158/MapServer", { "opacity": 0.8, id: "GNLCCProjectHeatMap2", visible: false });
+              pHeatLayer = new FeatureLayer("https://www.sciencebase.gov/arcgis/rest/services/Catalog/55c00cf2e4b033ef52104158/MapServer/0", { mode: FeatureLayer.MODE_ONDEMAND, id: "USFWS LR6 Project Heat Map", visible: false });
+              pHeatLayer2 = new ArcGISDynamicMapServiceLayer("https://www.sciencebase.gov/arcgis/rest/services/Catalog/55c00cf2e4b033ef52104158/MapServer", { "opacity": 0.8, id: "USFWS LR6ProjectHeatMap2", visible: false });
 
               pHumanMod = new ArcGISDynamicMapServiceLayer("https://www.sciencebase.gov/arcgis/rest/services/Catalog/5527fe7fe4b026915857c948/MapServer", { "opacity": 0.5, id: "HumanMod", visible: false });
 
@@ -160,7 +160,7 @@ define([
 
               var cbxLayers = [];
 
-              cbxLayers.push({ layer: pHeatLayer, title: 'GNLCC Project Heat Map' });
+              cbxLayers.push({ layer: pHeatLayer, title: 'USFWS LR6 Project Heat Map' });
               cbxLayers.push({ layer: pHumanMod, title: 'Human Modification Index' });
               cbxLayers.push({ layer: pLCCNetworkLayer, title: 'LCC Network Areas' });
               cbxLayers.push({ layer: pRefugesLayer, title: 'USFWS Refuges' });
@@ -175,7 +175,7 @@ define([
               cbxLayers.push({ layer: pRMPF, title: 'Rocky Mountain PF (General Area)' });
               cbxLayers.push({ layer: pSSPF, title: 'Sage Steppe PF (General Area)' });
               cbxLayers.push({ layer: pPartnershipsAreas, title: 'Partner and Ecosystem Areas of Interest' });
-              cbxLayers.push({ layer: pBase_LCC, title: 'GNLCC Boundary' });
+              cbxLayers.push({ layer: pBase_LCC, title: 'USFWS LR6 Boundary' });
               cbxLayers.push({ layer: pPTS_Projects, title: 'Projects' });
                             
               dojo.connect(app.map, 'onLayersAddResult', function (results) {
@@ -197,16 +197,16 @@ define([
                                   var clayer = app.map.getLayer(this.value);
                                   if (clayer.visible) {
                                       clayer.hide();
-                                      if (this.value == "GNLCC Project Heat Map") {
-                                          var clayer2 = app.map.getLayer("GNLCCProjectHeatMap2");
+                                      if (this.value == "USFWS LR6 Project Heat Map") {
+                                          var clayer2 = app.map.getLayer("USFWS LR6ProjectHeatMap2");
                                           clayer2.hide();
                                       }
 
 
                                   } else {
                                       clayer.show();
-                                      if (this.value == "GNLCC Project Heat Map") {
-                                          var clayer2 = app.map.getLayer("GNLCCProjectHeatMap2");
+                                      if (this.value == "USFWS LR6 Project Heat Map") {
+                                          var clayer2 = app.map.getLayer("USFWS LR6ProjectHeatMap2");
                                           clayer2.show();
                                       }
                                       
