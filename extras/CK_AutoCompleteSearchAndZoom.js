@@ -7,9 +7,10 @@ define([
   "esri/request",
   "esri/tasks/FindTask",
    "esri/tasks/FindParameters",
-         "esri/tasks/query",
+	"esri/tasks/query",
+	"dojo/promise/all",
 ], function (
-  declare, lang, esriRequest, FindTask, FindParameters, query
+  declare, lang, esriRequest, FindTask, FindParameters, query, All
 ) {
 
     return declare([], {
@@ -33,63 +34,74 @@ define([
 
         ExecutePTSFind: function (strSearchValue) { //had to revamp to a regular query due to AGOL not supporting find operations
             app.gQuery.ClearDivs();
-            //var pFindask = new esri.tasks.FindTask(this.strURL);
-            var pQryFT = new esri.tasks.Query();
-            var pQryTaskFT = new esri.tasks.QueryTask(this.strURL + "/0");
-            
-            pQryFT.where = "ProjectID like '%" + strSearchValue + "%'" +
+
+			var q_Layer1 = new esri.tasks.Query();
+			var qt_Layer1 = new esri.tasks.QueryTask(this.strURL + "/0");
+			q_Layer1.where = "ProjectID like '%" + strSearchValue + "%'" +
                                  " or Prj_Title like '%" + strSearchValue + "%'" +
                                  " or PI_Org like '%" + strSearchValue + "%'" +
                                  " or Partner_Organizaitons like '%" + strSearchValue + "%'" +
                                  " or Subject_Keywords like '%" + strSearchValue + "%'" +
                                  " or Location_Keywords like '%" + strSearchValue + "%'" +
                                  " or LeadName_LastFirst like '%" + strSearchValue + "%'"
+			q_Layer1.outFields = ["ProjectID"];
 
-            //params.layerIds = [0];
-            //params.searchFields = ["ProjectID", "Prj_Title", "PI_Org", "Partner_Organizaitons", "Subject_Keywords", "Location_Keywords", "LeadName_LastFirst"];
-            //pQryFT.outfields = ["ProjectID", "Prj_Title", "PI_Org", "Partner_Organizaitons", "Subject_Keywords", "Location_Keywords", "LeadName_LastFirst"];
-            //pQryFT.outfields = ["*"];
-            pQryFT.outFields = ["ProjectID"];
-            pQryFT.outFields = ["ProjectID", "Prj_Title", "PI_Org", "Partner_Organizaitons", "Subject_Keywords", "Location_Keywords", "LeadName_LastFirst"];
+			var q_Layer2 = new esri.tasks.Query();
+			var qt_Layer2 = new esri.tasks.QueryTask(this.strURL + "/9");
+			q_Layer2.where = "PersonName like '%" + strSearchValue + "%'" +	" or GroupName like '%" + strSearchValue + "%'" 
+			q_Layer2.outFields = ["projectid"];
 
-            //params.searchText = strSearchValue;
-            pQryFT.returnGeometry = false;
-            pQryTaskFT.execute(pQryFT, this.showResultsFromFind);
+			//(PersonName like '%Great%') or (GroupName like '%Great%')
+
+			q_Layer1.returnGeometry = false;
+			pLayer1 = qt_Layer1.execute(q_Layer1);
+			q_Layer2.returnGeometry = false;
+			pLayer2 = qt_Layer2.execute(q_Layer2);
+
+			var pLayer1, pLayer2, pPromises;
+			pPromises = new All([pLayer1, pLayer2]);
+			//pQryTaskFT.execute(pQryFT, this.showResultsFromFind);
+			pPromises.then(this.showResultsFromFind, this.err);
         },
 
         showResultsFromFind: function (results) {
-            if ((results != null) && (results != undefined)) {
-                if (results.features.length > 0) {
-                    var tempValue;
-                    var arrayValues = [];
-                    var testVals = {};
+			var tempValue;
+			var arrayValues = [];
+			var testVals = {};
 
-                    dojo.forEach(results.features, function (pfeatureItem) {  //Loop through the QueryTask results and populate an array with the unique values
-                        tempValue = pfeatureItem.attributes.ProjectID;
-                        if (tempValue == undefined) {
-                            tempValue = pfeatureItem.attributes.projectid;
-                        }
-                        if (!testVals[tempValue]) {
-                            testVals[tempValue] = true;
-                            var CheckedValue = tempValue;
-                            arrayValues.push(CheckedValue); //values.push({ name: zone });//values.push("'" + strValue + "'"); //values.push({ name: zone });
-                            this.app.gQuery.arryExtraPrjIDs4URLParam.push(CheckedValue);
-                        }
-                    });
-                    this.app.gQuery.arrayProjectIDs = arrayValues;
-                    this.app.gQuery.m_iarrayQueryIndex += 1; //increment the index value of the query array by 1
-
-                    if (app.gQuery.strQuery == null) {
-                        app.gQuery.strQuery = "ProjectID in (" + arrayValues.join(",") + ")";
-                    } else {
-                        app.gQuery.strQuery = app.gQuery.strQuery.replace(")", "," + arrayValues.join(",") + ")");
-                    }
-                    app.gQuery.SendQuery4ProjectResults(app.gQuery.strQuery, app.gQuery.m_grid);
-                }
-            }
-            else {
-                // do nothing
-            }
+			for (let i = 0; i < 2; i++) {
+				if ((results[i] != null) && (results[i] != undefined)) {
+					if (results[i].features.length > 0) {
+						dojo.forEach(results[i].features, function (pfeatureItem) {  //Loop through the QueryTask results and populate an array with the unique values
+							tempValue = pfeatureItem.attributes.ProjectID;
+							if (tempValue == undefined) {
+								tempValue = pfeatureItem.attributes.projectid;
+							}
+							if (!testVals[tempValue]) {
+								testVals[tempValue] = true;
+								arrayValues.push(tempValue);
+								this.app.gQuery.arryExtraPrjIDs4URLParam.push(tempValue);
+								//var CheckedValue = tempValue;
+								//arrayValues.push(CheckedValue);
+								//this.app.gQuery.arryExtraPrjIDs4URLParam.push(CheckedValue);
+							}
+							else {
+								console.log("Project ID Already Acconted For");
+							}
+						});
+					}
+				}
+			}
+			if (arrayValues.length > 0) {
+				this.app.gQuery.arrayProjectIDs = arrayValues;
+				this.app.gQuery.m_iarrayQueryIndex += 1; //increment the index value of the query array by 1
+				if (app.gQuery.strQuery == null) {
+					app.gQuery.strQuery = "ProjectID in (" + arrayValues.join(",") + ")";
+				} else {
+					app.gQuery.strQuery = app.gQuery.strQuery.replace(")", "," + arrayValues.join(",") + ")");
+				}
+				app.gQuery.SendQuery4ProjectResults(app.gQuery.strQuery, app.gQuery.m_grid);
+			}
         },
         
         zoomToPoint: function (pointx, pointy, option, dblZoom) {
@@ -121,50 +133,7 @@ define([
             }); //End zoomToPoint require
         },
 
-
-
-        //        InitialSearch_And_AutoComplete: function () {
-        //            this.strSearchField = "SID";
-        //            $('#loc').autocomplete({
-        //                source: function (request, response) {
-        //                    $.ajax({
-        //                        url: app.strTheme1_URL + "0/query",
-        //                        dataType: "jsonp",
-        //                        data: {
-        //                            where: strSearchField + " LIKE '%" + request.term.replace(/\'/g, '\'\'').toUpperCase() + "%'",     //makes single quotes into double for sql
-        //                            outFields: strSearchField,
-        //                            returnGeometry: true,
-        //                            f: "pjson"
-        //                        },
-        //                        success: function (data) {
-        //                            if (data.features) {
-        //                                response($.map(data.features.slice(0, 19), function (item) {      //only display first 10
-        //                                    return { label: item.attributes.SID, value2: item.geometry.x, value3: item.geometry.y}  //REmove the hardcode of the field eventually
-
-        //                                }));
-        //                            }
-        //                        }
-        //                    });
-        //                },
-        //                minLength: 3,
-        //                select: function (event, ui) {
-        //                    this.blur();
-        //                    var xpoint = ui.item.value2;
-
-        //                    var ypoint = ui.item.value3;
-        //                    this.zoomToPoint(xpoint, ypoint, ""); //Add the noPoint variable to keep the point graphic from drawing on the screen
-        //                }
-        //            });
-
-
-        //            //            return pQueryT.execute(pQuery, this.returnEvents, this.err);
-        //        },
-
-
-
-
-
-
+			   		 
         createJSONPolygon: function (coords, selector, atts) {
             var frank = String(coords);
 
