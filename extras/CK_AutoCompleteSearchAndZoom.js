@@ -84,6 +84,7 @@ define([
 							}
 							else {
 								console.log("Project ID Already Acconted For");
+								//do nothing
 							}
 						});
 					}

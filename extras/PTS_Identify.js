@@ -168,7 +168,7 @@ define([
         },
 
         returnEvents: function (results) {
-            console.log("queries finished: ", results);
+            //console.log("queries finished: ", results);
             var pLayer1
 
             if (results.features.length == 1) {

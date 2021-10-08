@@ -132,8 +132,8 @@ define([
 
               pCANNationalParks = new ArcGISDynamicMapServiceLayer("http://maps.natureserve.org/landscope1/rest/services/CAN/PRO_CAN_NationalParks/MapServer", { "opacity": 0.8, mode: FeatureLayer.MODE_ONDEMAND, id: "Can National Parks", visible: false });
 
-              pNPSLayer = new ArcGISDynamicMapServiceLayer("https://mapservices.nps.gov/arcgis/rest/services/LandResourcesDivisionTractAndBoundaryService/MapServer", { "opacity": 0.8, mode: FeatureLayer.MODE_ONDEMAND, id: "US National Park Service", visible: false });
-              pUSFSLayer = new ArcGISDynamicMapServiceLayer("https://apps.fs.fed.us/arcx/rest/services/EDW/EDW_BasicOwnership_01/MapServer", { "opacity": 0.5, mode: FeatureLayer.MODE_ONDEMAND, id: "US Forest Service Land (Zoom in to View)", visible: false });
+              //pNPSLayer = new ArcGISDynamicMapServiceLayer("https://mapservices.nps.gov/arcgis/rest/services/LandResourcesDivisionTractAndBoundaryService/MapServer", { "opacity": 0.8, mode: FeatureLayer.MODE_ONDEMAND, id: "US National Park Service", visible: false });
+              //pUSFSLayer = new ArcGISDynamicMapServiceLayer("https://apps.fs.fed.us/arcx/rest/services/EDW/EDW_BasicOwnership_01/MapServer", { "opacity": 0.5, mode: FeatureLayer.MODE_ONDEMAND, id: "US Forest Service Land (Zoom in to View)", visible: false });
               pBLMLayer = new ArcGISDynamicMapServiceLayer("https://maps4.arcgisonline.com/ArcGIS/rest/services/DOI/SMA-BLM_Federal_Lands/MapServer", { "opacity": 0.8, mode: FeatureLayer.MODE_ONDEMAND, id: "BLM Land", visible: false });
 
               var strlabelField2 = "area_names";
@@ -155,7 +155,8 @@ define([
 
 
               arrayLayers = [pCascadiaPF, pColumbiaPF, pRMPF, pSSPF, pPartnershipsAreas, pPTS_Projects, plabels1, pHeatLayer2, pHeatLayer, pBase_LCC, pRefugesLayer,
-                                pUSNativeLayer, pCANNationalParks, pNPSLayer, pUSFSLayer, pBLMLayer, pLCCNetworkLayer, plabels2, pHumanMod];
+				  pUSNativeLayer, pCANNationalParks, pBLMLayer, pLCCNetworkLayer, plabels2, pHumanMod];
+			  //pUSNativeLayer, pCANNationalParks, pNPSLayer, pUSFSLayer, pBLMLayer, pLCCNetworkLayer, plabels2, pHumanMod];
 
 
               var cbxLayers = [];
@@ -166,8 +167,8 @@ define([
               cbxLayers.push({ layer: pRefugesLayer, title: 'USFWS Refuges' });
               cbxLayers.push({ layer: pUSNativeLayer, title: 'US Indian Lands Boundaries' });
               cbxLayers.push({ layer: pCANNationalParks, title: 'Canada National Parks' });
-              cbxLayers.push({ layer: pNPSLayer, title: 'US National Park Service' });
-              cbxLayers.push({ layer: pUSFSLayer, title: 'US Forest Service Land (Zoom in to View)' });
+              //cbxLayers.push({ layer: pNPSLayer, title: 'US National Park Service' });
+              //cbxLayers.push({ layer: pUSFSLayer, title: 'US Forest Service Land (Zoom in to View)' });
               cbxLayers.push({ layer: pBLMLayer, title: 'BLM Land' });
               
               cbxLayers.push({ layer: pCascadiaPF, title: 'Cascadia PF (General Area)' });

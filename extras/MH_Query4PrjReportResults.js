@@ -135,10 +135,6 @@ define([
               this.m_iarrayQueryIndex = iarrayQueryIndex;
 			  pTblindexAndQuery = arrayQuery[iarrayQueryIndex];
 
-			  if (iarrayQueryIndex == 6) {
-				  console.log("funding sum by year");
-			  }
-
               if (pTblindexAndQuery[5] == "divProposals") {
                   var temp2 = "";
               }
