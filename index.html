@@ -142,12 +142,19 @@
 					$('#cover-up').click(function () {
 						window.open("http://greatnorthernlcc.org/", "_self");
 					});
+				} else if (tokens["PrjID2Add"]) {
+					arrayQuery = ParseToken4PotentialQueryArgs(tokens);
 				}
 
 				CK_ASZ = new CK_AutoCompleteSearchAndZoom({ strSearchField: "ProjectID", strURL: strURL }); // instantiate the class
 				if (arrayQuery.length > 0) {        //if the returned tokens are query filters then setup for using the filters
 					app.gQuery.SendQuery2(arrayQuery, 0, grid);
-				} else {
+				} else if (this.app.gQuery.arryExtraPrjIDs4URLParam.length > 0) {
+                    ////var arrayValuesIDFromURLOnly = arrayValues.concat(this.app.gQuery.arryExtraPrjIDs4URLParam)
+					var strQueryIDFromURLOnly = "ProjectID in (" + this.app.gQuery.arryExtraPrjIDs4URLParam.join(",") + ")";  
+					app.gQuery.SendQuery4ProjectResults(strQueryIDFromURLOnly, grid);
+				}
+				else {
 					app.gQuery.SendQuery4ProjectResults("OBJECTID > 0", grid);
 				}
 
