@@ -51,8 +51,6 @@ define([
 			q_Layer2.where = "PersonName like '%" + strSearchValue + "%'" +	" or GroupName like '%" + strSearchValue + "%'" 
 			q_Layer2.outFields = ["projectid"];
 
-			//(PersonName like '%Great%') or (GroupName like '%Great%')
-
 			q_Layer1.returnGeometry = false;
 			pLayer1 = qt_Layer1.execute(q_Layer1);
 			q_Layer2.returnGeometry = false;
@@ -60,7 +58,6 @@ define([
 
 			var pLayer1, pLayer2, pPromises;
 			pPromises = new All([pLayer1, pLayer2]);
-			//pQryTaskFT.execute(pQryFT, this.showResultsFromFind);
 			pPromises.then(this.showResultsFromFind, this.err);
         },
 
