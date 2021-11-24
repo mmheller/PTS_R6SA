@@ -107,7 +107,7 @@ define([
               arrayQuery.push(["4", strQuery, "EcotypicAreaName", "count", "EcotypicAreaName", "divEcotypicArea", '{0}', ""]);
               arrayQuery.push(["8", strQuery, "GoalName", "count", "GoalName", "divGoals", '{0}', ""]);
               arrayQuery.push(["11", strQuery, "Stressor", "count", "Stressor", "divStressors", '{0}', ""]);
-              arrayQuery.push(["0", strQuery, "Comments", "count", "Comments", "divLCMAPLink", '<a href="{0}">LC MAP Project Storage Workspace</a>  ', ""]);
+              arrayQuery.push(["0", strQuery, "Comments", "count", "Comments", "divLCMAPLink", '<a href="{0}">Sciencebase Project Storage Workspace</a>  ', ""]);
               arrayQuery.push(["0", strQuery, "PrjStatus", "count", "PrjStatus", "divStatus", '{0}', ""]);
 
               arrayQuery.push(["0", strQuery, "Subject_Keywords", "count", "Subject_Keywords", "txtKeywords", 'Subject Keywords: {0}', ""]);
