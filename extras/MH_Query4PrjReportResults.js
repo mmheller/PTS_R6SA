@@ -95,7 +95,7 @@ define([
               arrayQuery.push(["0", strQuery, "Prj_Start_Date", "count", "Prj_Start_Date", "divStart", '{0} ', ""]);
               arrayQuery.push(["0", strQuery, "Prj_End_Date", "count", "Prj_End_Date", "divEnd", '{0} ', ""]);
               //              arrayQuery.push(["2", strQuery, "DelivType", "count", "DelivType", "divDeliverables", 'Deliverable Types: {0} ', ""]);
-              arrayQuery.push(["6", strQuery, "amount", "sum", "Fund_Year", "dTotalAllocatedbyLCCbyYear", '<b>Total USFWS Region 6 SA Funds Administered by Year:</b> \n<br>{0} ', "show both"]);
+			  arrayQuery.push(["6", strQuery, "amount", "sum", "Fund_Year", "dTotalAllocatedbyLCCbyYear", '<b>Total USFWS Region 6 SA Funds Administered by Year:</b> \n<br>{0} ', "show both"]);
 
 			  arrayQuery.push(["5", strQuery, "modificationcode", "count", "modificationcode", "dAgreementNumbers", '<b>Agreement Number(s):</b> \n<br>{0}', ""]);
 			  
